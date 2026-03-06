@@ -155,7 +155,7 @@ The following diagram represents the architecture of the deep learning model use
 The graphs below show the training and validation loss and accuracy during model training.
 
 <p align="center">
-
+<img width="1189" height="590" alt="image" src="https://github.com/user-attachments/assets/175a5e1d-fce8-410d-a70b-9a66e0c78ec2" />
 </p>
 
 ---
