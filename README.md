@@ -155,7 +155,7 @@ The following diagram represents the architecture of the deep learning model use
 The graphs below show the training and validation loss and accuracy during model training.
 
 <p align="center">
-<img src="model_using_mobilenet_v2.png" width="900">
+
 </p>
 
 ---
