@@ -160,6 +160,15 @@ The graphs below show the training and validation loss and accuracy during model
 
 ---
 
+## 📉 Confusion Matrix
+
+The confusion matrix below shows how the model performed in classifying each blood cell type.
+
+<p align="center">
+<img width="838" height="853" alt="image" src="https://github.com/user-attachments/assets/25a49ac8-fcd7-4f5f-9aa9-aff5421b941a" />
+" width="700">
+</p>
+
 # 🚀 Getting Started
 
 To reproduce this project, follow these steps.
