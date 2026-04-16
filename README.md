@@ -1,127 +1,174 @@
-# Recommender System Project
+# 🤖 Context-Aware RAG Chatbot
 
-This project demonstrates a recommendation system using different approaches, including traditional methods, hybrid techniques, and a modern large language model (LLM) approach. The system aims to predict and recommend items to users based on their interactions, preferences, and contextual data.
+---
 
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Approaches](#approaches)
-    - [Traditional Recommendation](#traditional-recommendation)
-    - [Hybrid Recommendation](#hybrid-recommendation)
-    - [LLM-based Recommendation](#llm-based-recommendation)
-3. [Comparison of Approaches](#comparison-of-approaches)
-4. [Project Structure](#project-structure)
-5. [Installation](#installation)
-6. [Usage](#usage)
-7. [Results](#results)
-8. [Conclusion](#conclusion)
+## 1. Introduction
 
-## Introduction
+Large Language Models (LLMs) are powerful but have limitations such as hallucinations, lack of awareness of external or private data, and weak handling of conversational context. This project addresses these challenges by implementing a **Context-Aware Retrieval-Augmented Generation (RAG) Chatbot** that grounds responses in a trusted knowledge source while maintaining conversational memory.
 
-The purpose of this project is to explore and compare different recommendation techniques. Recommendation systems are widely used in various domains such as e-commerce, content streaming platforms, and social media to enhance user experience by suggesting relevant items.
+The system is built using **LangChain v1.0+**, **OpenAI**, **FAISS**, and **Streamlit**, following modern best practices and avoiding deprecated APIs.
 
-## Approaches
+---
 
-### Traditional Recommendation
+## 2. Problem Statement
 
-Traditional recommendation systems include:
+Traditional LLM-based chatbots:
 
-- **Collaborative Filtering**: Recommends items based on user-item interactions, leveraging similarities between users (user-based) or items (item-based).
-- **Content-Based Filtering**: Recommends items based on the item's content and user preferences for similar items.
+- Cannot reliably answer questions from specific external documents
+- Often hallucinate responses
+- Do not understand follow-up questions without additional context handling
+- Expose poor UX and insecure API key handling
 
-These methods are relatively easy to implement but may suffer from issues such as the cold-start problem and lack of contextual understanding.
+There is a need for a conversational system that retrieves answers from a verified knowledge base, maintains conversational context, and provides a secure, user-friendly interface.
 
-### Hybrid Recommendation
+---
 
-Hybrid recommendation systems combine multiple recommendation techniques to overcome the limitations of individual methods. For instance, a hybrid system might merge collaborative filtering with content-based filtering to create more accurate predictions. This combination provides better results by leveraging both user behavior and content characteristics.
+## 3. Objective
 
-**Advantages**:
-- Can alleviate cold-start issues.
-- Provides more robust recommendations by considering multiple factors.
+The objectives of this project are to:
 
-### LLM-based Recommendation
+- Build a **context-aware chatbot** using Retrieval-Augmented Generation (RAG)
+- Enable accurate question answering from an external knowledge source
+- Maintain conversational history for multi-turn interactions
+- Reduce hallucinations by grounding responses in retrieved documents
+- Use **modern LangChain v1.0+ (LCEL)** APIs
+- Provide a clean and secure frontend experience
 
-Large Language Models (LLMs) like GPT-4 are capable of understanding complex patterns in user interactions, contextual data, and item descriptions. LLM-based recommendation systems can provide more personalized and context-aware suggestions by interpreting unstructured data such as text reviews, descriptions, and user queries.
+---
 
-**Advantages**:
-- Able to handle unstructured data.
-- Provides more nuanced recommendations considering context, sentiment, and language patterns.
-- Adaptable to various domains with minimal changes.
+## 4. System Architecture
 
-## Comparison of Approaches
+### High-Level Components
 
-| Aspect                     | Traditional Recommender | Hybrid Recommender      | LLM-based Recommender   |
-|----------------------------|-------------------------|-------------------------|-------------------------|
-| **Ease of Implementation**  | High                    | Medium                  | Low                     |
-| **Cold Start Problem**      | Severe                  | Mitigated               | Minimal                 |
-| **Data Requirements**       | Structured              | Structured              | Structured & Unstructured |
-| **Personalization**         | Basic                   | Moderate                | High                    |
-| **Scalability**             | High                    | Medium                  | Low                     |
-| **Context Awareness**       | Low                     | Medium                  | High                    |
+1. **Frontend (Streamlit)**
+   - API key input
+   - Chat interface
+   - Clear chat history control
 
-### Visualization of Different Approaches
+2. **Document Loader**
+   - WebBaseLoader (Wikipedia – Artificial Intelligence page)
 
-Here’s a visual comparison of the three recommendation approaches:
+3. **Text Processing**
+   - RecursiveCharacterTextSplitter
 
-1. **Traditional Recommendation**: Simple user-item matrix with predictions based on historical data.
+4. **Vector Store**
+   - FAISS for similarity search
 
-![Traditional Recommendation](./images/traditional-recommendation.png)
+5. **Embedding Model**
+   - OpenAI Embeddings (`text-embedding-3-small`)
 
-2. **Hybrid Recommendation**: Combining multiple sources of information to make a more robust prediction.
+6. **LLM**
+   - OpenAI Chat Model (`gpt-4o-mini`)
 
-![Hybrid Recommendation](./images/result-of-hybrid.png)
+7. **RAG Pipeline (LCEL)**
+   - Contextual question reformulation
+   - Document retrieval
+   - Grounded answer generation
 
-3. **LLM-based Recommendation**: Leveraging large language models to make context-aware and personalized recommendations.
+---
 
-![LLM-based Recommendation](./images/results-of-llm-recommendation.png)
+## 5. Methodology / Workflow
 
-## Project Structure
+1. **API Key Connection**
+   - User enters OpenAI API key via frontend
+   - Chat functionality enabled only after successful connection
 
+2. **Data Ingestion**
+   - Wikipedia page is loaded and parsed
+
+3. **Chunking**
+   - Text split into overlapping chunks for better retrieval
+
+4. **Vectorization**
+   - Text chunks converted into embeddings
+   - Stored in FAISS vector database
+
+5. **Query Processing**
+   - User query reformulated into a standalone question if chat history exists
+
+6. **Retrieval**
+   - Relevant document chunks retrieved using semantic similarity
+
+7. **Answer Generation**
+   - LLM generates concise answers grounded in retrieved context
+
+8. **Memory Handling**
+   - Chat history stored using Streamlit session state
+
+---
+
+## 6. Key Features
+
+- Context-aware multi-turn conversations
+- Retrieval-Augmented Generation (RAG)
+- Modern LangChain LCEL implementation
+- Secure API key handling
+- Clear chat history functionality
+- Cached vector store for performance
+
+---
+
+## 7. Technology Stack
+
+- **Programming Language:** Python 3.10+
+- **Frontend:** Streamlit
+- **LLM Framework:** LangChain v1.0+
+- **Vector Database:** FAISS
+- **LLM & Embeddings:** OpenAI
+
+---
+
+## 8. Installation & Setup
+
+```bash
+# Clone repository
+git clone https://github.com/your-username/context-aware-rag-chatbot.git
+cd context-aware-rag-chatbot
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run application
+streamlit run app.py
 ```
-├── recommender-system.ipynb  # Jupyter notebook containing the project code
-├── data/                     # Directory for datasets
-├── models/                   # Saved models
-├── images/                   # Directory for images used in the README
-├── README.md                 # Project documentation (this file)
-└── requirements.txt          # Dependencies for the project
-```
 
-## Installation
+---
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/recommender-system.git
-   cd recommender-system
-   ```
+## 9. Results & Observations
 
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+- The chatbot accurately answers questions based on retrieved context
+- Follow-up questions are handled effectively using conversational memory
+- Retrieval grounding significantly reduces hallucinations
+- Clean UI improves usability and security
 
-3. Initialize Git LFS (if required for large files):
-   ```bash
-   git lfs install
-   ```
+---
 
-## Usage
+## 10. Limitations
 
-1. Open the Jupyter notebook:
-   ```bash
-   jupyter notebook recommender-system.ipynb
-   ```
+- Knowledge limited to the ingested dataset
+- Requires an active OpenAI API key
+- Single-source document ingestion in the current version
 
-2. Run the cells in the notebook to train and evaluate the recommendation models.
+---
 
-## Results
+## 11. Future Enhancements
 
-The results of the recommendation system vary across the different approaches:
+- Upload and query custom documents (PDF, DOCX, TXT)
+- Multi-document support
+- Streaming responses
+- Agentic RAG (Planner–Retriever–Verifier)
+- Conversation export functionality
 
-- **Traditional Recommendation**: Achieved an accuracy of `X%`, with limitations in handling cold starts.
-- **Hybrid Recommendation**: Improved accuracy to `Y%` by combining collaborative and content-based filtering.
-- **LLM-based Recommendation**: Achieved the best performance with an accuracy of `Z%`, demonstrating superior handling of unstructured data and context-aware predictions.
+---
 
-## Conclusion
+## 12. Conclusion
+This project demonstrates a production-ready implementation of a Context-Aware RAG Chatbot using modern LLM tooling. It provides a scalable foundation for building enterprise-grade conversational AI systems that are accurate, secure, and context-aware.
 
-In this project, we explored different recommendation approaches, highlighting the strengths and weaknesses of traditional, hybrid, and LLM-based methods. While traditional methods are easier to implement and scale, hybrid methods offer more robustness, and LLM-based recommendations provide the highest level of personalization and context awareness.
+
 
 
