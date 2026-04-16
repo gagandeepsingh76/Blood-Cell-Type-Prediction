@@ -1,174 +1,252 @@
-# 🤖 Context-Aware RAG Chatbot
+# 🩸 Blood Cell Type Image Classification using Transfer Learning (MobileNetV2)
+
+<a href="#"><img alt="Python" src="https://img.shields.io/badge/Python-11557c.svg?logo=python&logoColor=white"></a>
+<a href="#"><img alt="Matplotlib" src="https://img.shields.io/badge/Matplotlib-0080bf.svg?logo=matplotlib&logoColor=white"></a>
+<a href="#"><img alt="NumPy" src="https://img.shields.io/badge/Numpy-00acdf.svg?logo=numpy&logoColor=white"></a>
+<a href="#"><img alt="TensorFlow" src="https://img.shields.io/badge/TensorFlow-55d0ff.svg?logo=TensorFlow&logoColor=white"></a>
+<a href="#"><img alt="Keras" src="https://img.shields.io/badge/Keras-7ce8ff.svg?logo=Keras&logoColor=white"></a>
+
+<br>
+
+Blood Cell Type Prediction  
+Apr 2023
 
 ---
 
-## 1. Introduction
+# 📌 Project Description
 
-Large Language Models (LLMs) are powerful but have limitations such as hallucinations, lack of awareness of external or private data, and weak handling of conversational context. This project addresses these challenges by implementing a **Context-Aware Retrieval-Augmented Generation (RAG) Chatbot** that grounds responses in a trusted knowledge source while maintaining conversational memory.
-
-The system is built using **LangChain v1.0+**, **OpenAI**, **FAISS**, and **Streamlit**, following modern best practices and avoiding deprecated APIs.
-
----
-
-## 2. Problem Statement
-
-Traditional LLM-based chatbots:
-
-- Cannot reliably answer questions from specific external documents
-- Often hallucinate responses
-- Do not understand follow-up questions without additional context handling
-- Expose poor UX and insecure API key handling
-
-There is a need for a conversational system that retrieves answers from a verified knowledge base, maintains conversational context, and provides a secure, user-friendly interface.
+This project aims to classify blood cell types using deep learning and transfer learning techniques.  
+The **MobileNetV2 architecture** is used as a **pre-trained model for feature extraction**, and a **custom classification model** is built on top of it.
 
 ---
 
-## 3. Objective
+# 🎯 Project Goal
 
-The objectives of this project are to:
+The goal of this project is to develop an **automated method for detecting and classifying blood cell subtypes** using machine learning techniques.
 
-- Build a **context-aware chatbot** using Retrieval-Augmented Generation (RAG)
-- Enable accurate question answering from an external knowledge source
-- Maintain conversational history for multi-turn interactions
-- Reduce hallucinations by grounding responses in retrieved documents
-- Use **modern LangChain v1.0+ (LCEL)** APIs
-- Provide a clean and secure frontend experience
+The project utilizes a dataset containing **12,500 augmented images of blood cells**, each labeled with the corresponding cell type.
 
----
+The dataset consists of four different cell types:
 
-## 4. System Architecture
+- Eosinophil  
+- Lymphocyte  
+- Monocyte  
+- Neutrophil  
 
-### High-Level Components
-
-1. **Frontend (Streamlit)**
-   - API key input
-   - Chat interface
-   - Clear chat history control
-
-2. **Document Loader**
-   - WebBaseLoader (Wikipedia – Artificial Intelligence page)
-
-3. **Text Processing**
-   - RecursiveCharacterTextSplitter
-
-4. **Vector Store**
-   - FAISS for similarity search
-
-5. **Embedding Model**
-   - OpenAI Embeddings (`text-embedding-3-small`)
-
-6. **LLM**
-   - OpenAI Chat Model (`gpt-4o-mini`)
-
-7. **RAG Pipeline (LCEL)**
-   - Contextual question reformulation
-   - Document retrieval
-   - Grounded answer generation
+In this project we build a **deep learning based image classification model using a pretrained MobileNetV2 model and applying the concept of transfer learning.**
 
 ---
 
-## 5. Methodology / Workflow
+# 🧠 Transfer Learning
 
-1. **API Key Connection**
-   - User enters OpenAI API key via frontend
-   - Chat functionality enabled only after successful connection
+## What is Transfer Learning?
 
-2. **Data Ingestion**
-   - Wikipedia page is loaded and parsed
+Transfer learning is a technique that uses knowledge gained from a **pre-trained model on one task** to boost performance on a **different but related task**.
 
-3. **Chunking**
-   - Text split into overlapping chunks for better retrieval
-
-4. **Vectorization**
-   - Text chunks converted into embeddings
-   - Stored in FAISS vector database
-
-5. **Query Processing**
-   - User query reformulated into a standalone question if chat history exists
-
-6. **Retrieval**
-   - Relevant document chunks retrieved using semantic similarity
-
-7. **Answer Generation**
-   - LLM generates concise answers grounded in retrieved context
-
-8. **Memory Handling**
-   - Chat history stored using Streamlit session state
+It takes advantage of the learned features and representations from the pre-trained model, which can be applied to a new task.  
+This approach helps overcome **data limitations**, **speeds up training**, and **improves performance** on new tasks.
 
 ---
 
-## 6. Key Features
+## Benefits of Transfer Learning
 
-- Context-aware multi-turn conversations
-- Retrieval-Augmented Generation (RAG)
-- Modern LangChain LCEL implementation
-- Secure API key handling
-- Clear chat history functionality
-- Cached vector store for performance
+1️⃣ **Improved Performance**
+
+By leveraging pre-trained models trained on large datasets, transfer learning helps achieve higher performance on new tasks with limited data.
+
+2️⃣ **Faster Training**
+
+Transfer learning reduces training time and computational resources because the base model already understands many general image features.
+
+3️⃣ **Better Generalization**
+
+Models learn abstract features that work well across different tasks.
+
+4️⃣ **Data Efficiency**
+
+Models can perform well even with smaller datasets.
 
 ---
 
-## 7. Technology Stack
+# 📊 Project Overview
 
-- **Programming Language:** Python 3.10+
-- **Frontend:** Streamlit
-- **LLM Framework:** LangChain v1.0+
-- **Vector Database:** FAISS
-- **LLM & Embeddings:** OpenAI
+The project consists of the following key steps:
+
+### 1️⃣ Data Acquisition
+
+Download the dataset from Kaggle:
+
+https://www.kaggle.com/datasets/paultimothymooney/blood-cells
 
 ---
 
-## 8. Installation & Setup
+### 2️⃣ Data Preprocessing
 
-```bash
-# Clone repository
-git clone https://github.com/your-username/context-aware-rag-chatbot.git
-cd context-aware-rag-chatbot
+The image data is loaded and preprocessed using the `ImageDataGenerator` class from TensorFlow.
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+The dataset is divided into:
 
-# Install dependencies
-pip install -r requirements.txt
+- Training dataset  
+- Validation dataset  
 
-# Run application
-streamlit run app.py
+---
+
+### 3️⃣ Build Pretrained Model
+
+The **MobileNetV2 model** is loaded with **pre-trained weights** and frozen to retain its learned features.
+
+Additional **custom classification layers** are added for blood cell classification.
+
+---
+
+### 4️⃣ Training the Model
+
+The model is trained using the **training dataset** and validated using the **validation dataset**.
+
+Training includes:
+
+- Multiple epochs
+- Early stopping to prevent overfitting
+
+---
+
+### 5️⃣ Evaluating Results
+
+The trained model is evaluated on the **test dataset**.
+
+Evaluation includes:
+
+- Loss
+- Accuracy
+- Classification Report
+- Confusion Matrix
+
+---
+
+# 📂 Project Structure
+
+```
+Blood-Cell-Classification
+│
+├── README.md
+├── model.ipynb
+├── model_using_xception.ipynb
+├── requirements.txt
+│
+├── model_architecture.png
+├── model_using_mobilenet_v2.png
+├── model_using_xception.png
 ```
 
 ---
 
-## 9. Results & Observations
+# 🧠 Model Architecture
 
-- The chatbot accurately answers questions based on retrieved context
-- Follow-up questions are handled effectively using conversational memory
-- Retrieval grounding significantly reduces hallucinations
-- Clean UI improves usability and security
+The following diagram represents the architecture of the deep learning model used for blood cell classification.
 
----
-
-## 10. Limitations
-
-- Knowledge limited to the ingested dataset
-- Requires an active OpenAI API key
-- Single-source document ingestion in the current version
+<p align="center">
+<img src="model_architecture.png" width="900">
+</p>
 
 ---
 
-## 11. Future Enhancements
+# 📊 Training Results
 
-- Upload and query custom documents (PDF, DOCX, TXT)
-- Multi-document support
-- Streaming responses
-- Agentic RAG (Planner–Retriever–Verifier)
-- Conversation export functionality
+The graphs below show the training and validation loss and accuracy during model training.
+
+<p align="center">
+<img width="1189" height="590" alt="image" src="https://github.com/user-attachments/assets/175a5e1d-fce8-410d-a70b-9a66e0c78ec2" />
+</p>
 
 ---
 
-## 12. Conclusion
-This project demonstrates a production-ready implementation of a Context-Aware RAG Chatbot using modern LLM tooling. It provides a scalable foundation for building enterprise-grade conversational AI systems that are accurate, secure, and context-aware.
+## 📉 Confusion Matrix
 
+The confusion matrix below shows how the model performed in classifying each blood cell type.
 
+<p align="center">
+<img width="838" height="853" alt="image" src="https://github.com/user-attachments/assets/25a49ac8-fcd7-4f5f-9aa9-aff5421b941a" />
+" width="700">
+</p>
 
+# 🚀 Getting Started
 
+To reproduce this project, follow these steps.
+
+---
+
+## 1️⃣ Dataset Preparation
+
+Prepare a dataset of blood cell images divided into:
+
+- Training directory
+- Testing directory
+
+Update the following variables in the code:
+
+```
+train_dir
+test_dir
+```
+
+---
+
+## 2️⃣ Environment Setup
+
+Set up a Python environment and install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 3️⃣ Run the Model
+
+Execute the notebook:
+
+```
+model.ipynb
+```
+
+Run all cells sequentially to:
+
+- Load dataset
+- Train model
+- Evaluate results
+
+---
+
+## 4️⃣ Analyze Results
+
+After training, review:
+
+- Training vs Validation Accuracy
+- Training vs Validation Loss
+- Confusion Matrix
+- Classification Report
+
+---
+
+# 📈 Results
+
+Based on the validation dataset:
+
+- The model achieves **94.5% accuracy on validation images**
+
+Possible reasons for lower performance on the test dataset:
+
+1. The test data may contain mislabeled samples  
+2. The test dataset may have been generated differently from the training dataset
+
+The confusion matrix suggests that the **neutrophil class may contain mixed samples from other classes.**
+
+---
+
+# 📌 Conclusion
+
+This project demonstrates the application of **transfer learning using the MobileNetV2 architecture for blood cell type classification.**
+
+Although the model achieves **high validation accuracy**, further investigation is required to understand the difference between validation and test performance.
+
+The project can be extended and optimized to improve **accuracy and generalization capability**.
